@@ -1,4 +1,4 @@
-/*
+ /*
 
 1)Given a BST ,Find its Maximum Height 
 
@@ -40,17 +40,72 @@ struct node{
 	struct node *right;
 };
 
+static int lsum=0,rsum=0;
+
+//**************************************************HELPER FUNCTIONS***********************************************//
+
+void left_sum(struct node *root){
+
+	if (root != NULL)
+	{
+		lsum = lsum + root->data;
+		left_sum(root->left);
+	}
+	
+}
+
+void right_sum(struct node *root){
+
+	if (root != NULL)
+	{
+		rsum = rsum + root->data;
+		right_sum(root->right);
+	}
+	
+}
+
+
+//********************************************************************************************************************//
+
+
 
 int get_height(struct node *root){
 
-	return 0;
+
+	if (root == NULL)
+		return 0;
+	
+		int lh=get_height(root->left);
+		int rh=get_height(root->right);
+	
+	if (lh >= rh)
+		return lh+1;
+	else
+		return rh+1;
 }
 
+
 int get_left_subtree_sum(struct node *root){
-	return 0;
+
+	if (root == NULL)
+		return -1;
+	else if (root != NULL)
+	{
+		lsum = 0;
+		left_sum(root->left);
+	}
+	return lsum;
 }
 
 int get_right_subtree_sum(struct node *root){
-	return 0;
+	
+	if (root == NULL)
+		return -1;
+	else if (root != NULL)
+	{
+		rsum = 0;
+		right_sum(root->right);
+	}
+	return rsum;
 }
 

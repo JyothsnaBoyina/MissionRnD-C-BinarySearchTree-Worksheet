@@ -29,9 +29,64 @@ struct node{
 	struct node *right;
 };
 
+static int i = 0, lh = 0, rh = 0;
+
+
+
+int get_height1(struct node *root){
+
+
+	if (root == NULL)
+		return 0;
+
+	int lh = get_height1(root->left);
+	int rh = get_height1(root->right);
+
+	if (lh >= rh)
+		return lh + 1;
+	else
+		return rh + 1;
+}
+
+void BSTarray(struct node* root, int *arr,int h)
+{
+	if (root == NULL)
+		return;
+	if (h == 1)
+	{
+		arr[i] = root->data;
+		i++;
+	}
+	else if (h > 1)
+	{
+		BSTarray(root->right,arr, h - 1);
+		BSTarray(root->left, arr, h - 1);
+	}
+	
+}
+
+
 
 
 int* BSTRighttoLeftRows(struct node* root)
 {
-    return NULL;
+	
+	if (root == NULL)
+		return NULL; 
+	
+	int *arr;
+	arr = (int*)malloc(20*sizeof(int));
+
+	i = 0;
+
+	int h = get_height1(root);
+
+	for (int j = 1; j <= h;j++)
+		BSTarray(root, arr,j);
+   
+	return arr;
+
 }
+
+
+

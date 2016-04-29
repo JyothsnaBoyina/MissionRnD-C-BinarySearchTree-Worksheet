@@ -39,7 +39,62 @@ struct node{
   struct node *right;
 };
 
+
+
+int getMin(int x, int y)
+{
+	if (x < y)
+		return x;
+	else
+		return y;
+}
+
+int count(struct node *root)
+{
+	if (root == NULL)
+		return INT_MAX;
+	if (root->left == NULL && root->right == NULL)
+		return 0;
+
+	return 1 + getMin(count(root->left), count(root->right));
+}
+
+int get_dist(struct node *root, int k, struct node *nodes[],int index)
+{
+	
+	if (root == NULL)
+		return INT_MAX;
+
+	
+	if (root->data == k)
+	{
+		int res = count(root);
+
+		
+		for (int i = index - 1; i >= 0; i--)
+			res = getMin(res, index - i + count(nodes[i]));
+		return res;
+	}
+
+	
+	nodes[index] = root;
+	return getMin(get_dist(root->left, k, nodes, index + 1),get_dist(root->right, k, nodes, index + 1));
+
+}
+
+
+int find(struct node *root, int k)
+{
+	struct node *nodes[100];
+
+	return get_dist(root, k, nodes, 0);
+}
+
+
 int get_closest_leaf_distance(struct node *root, struct node *temp)
 {
-  return -1;
+	if (root==NULL||temp==NULL)
+      return -1;
+
+	return find(root, temp->data);
 }
